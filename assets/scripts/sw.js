@@ -1,8 +1,21 @@
-const version = '20200214093302';
+---
+permalink: "/sw.js"
+layout: none
+---
+const version = '{{ site.time | date: '%Y%m%d%H%M%S' }}';
 const cacheName = `static::${version}`;
 
 const buildContentBlob = () => {
-  return ["/technologie/2019/02/14/raspberry4/","/technologie/2019/02/13/Ubuntu-is-out/","/general/2018/08/22/hello-world/","/about/","/categories/","/blog/","/","/manifest.json","/assets/search.json","/assets/styles.css","/redirects.json","/feed.xml","/sitemap.xml","/robots.txt","https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50", "/assets/default-offline-image.png", "/assets/scripts/fetch.js"
+  return [
+    {%- for post in site.posts limit: 10 -%}
+      "{{ post.url }}",
+    {%- endfor -%}
+    {%- for page in site.pages -%}
+      {%- unless page.url contains 'sw.js' or page.url contains '404.html' -%}
+        "{{ page.url }}",
+      {%- endunless -%}
+    {%- endfor -%}
+      "{{ site.logo }}", "/assets/default-offline-image.png", "/assets/scripts/fetch.js"
   ]
 }
 
